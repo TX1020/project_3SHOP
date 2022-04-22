@@ -1,22 +1,36 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-
+// 引入路由组件
+import Home from '@/views/Home/indexHome.vue'
+import Search from '@/views/Search/indexSearch.vue'
+import Login from '@/views/Login/indexLogin.vue'
+import Register from '@/views/Register/indexRegister.vue'
 Vue.use(VueRouter)
-
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: '/home',
+    component: Home,
+    meta: { show: true }
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/search',
+    component: Search,
+    meta: { show: true }
+  },
+  {
+    path: '/login',
+    component: Login,
+    meta: { show: false }
+  },
+  {
+    path: '/register',
+    component: Register,
+    meta: { show: false }
+  },
+  // 重定向，项目跑起来的时候，访问/，立马让他定向到首页
+  {
+    path: '*',
+    redirect: '/home'
   }
 ]
 
