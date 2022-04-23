@@ -32,7 +32,7 @@
                 </h1>
                 <div class="searchArea">
                     <form action="###" class="searchForm">
-                        <input type="text" id="autocomplete" class="input-error input-xxlarge" />
+                        <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyWords"/>
                         <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">搜索</button>
                     </form>
                 </div>
@@ -42,10 +42,22 @@
 
 <script>
 export default {
+  data () {
+    return {
+      keyWords: ''
+    }
+  },
   methods: {
     // 搜索按钮的回调函数，向serch路由进行跳转
     goSearch () {
-      this.$router.push('/search')
+      // 路由传参
+      this.$router.push(
+        {
+          name: 'search',
+          params: { keyWords: '' || undefined || this.keyWords },
+          query: { keyWords: this.keyWords.toUpperCase() }
+        }
+      )
     }
   }
 }

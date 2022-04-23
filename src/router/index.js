@@ -13,9 +13,11 @@ const routes = [
     meta: { show: true }
   },
   {
-    path: '/search',
+    // 加上问号代表params可传可不传
+    path: '/search/:keyWords?',
     component: Search,
-    meta: { show: true }
+    meta: { show: true },
+    name: 'search'
   },
   {
     path: '/login',
