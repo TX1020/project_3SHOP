@@ -1,17 +1,26 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+// 引入小仓库
+import home from './Home/home'
+import search from './Search/search'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+  // // 数据存储的地方
+  // state: {
+  // },
+  // // 可以理解为计算属性，用于简化仓库数据，让组件获取仓库数据更加方便
+  // getters: {
+  // },
+  // // 修改state的唯一手段
+  // mutations: {
+  // },
+  // // 处理action。可以书写自己的业务逻辑，也可以处理异步
+  // actions: {
+  // },
   modules: {
+    home,
+    search
   }
+
 })

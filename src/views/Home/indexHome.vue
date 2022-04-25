@@ -30,6 +30,5 @@ export default {
 };
 </script>
 
-<style
-TypeNav scoped>
+<style scoped lang='less'>
 </style>
