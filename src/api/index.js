@@ -11,3 +11,11 @@ export const reqbannerList = () => {
 export const reqFloorList = () => {
   return mockrequest.get('/floor')
 }
+// 获取search 数据
+export const reqSearch = (params) => {
+  return mockrequest({
+    url: '/list',
+    method: 'post',
+    data: params
+  })
+}

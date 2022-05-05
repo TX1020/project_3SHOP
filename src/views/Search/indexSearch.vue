@@ -12,52 +12,107 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.keyWords">
+              {{ searchParams.keyWords }}<i @click="removeKeyWords">×</i>
+            </li>
+            <!-- 品牌面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removetradeMark">×</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="(attr, index) in searchParams.props"
+              :key="index"
+            >
+              {{ attr.split(":")[1] }}<i @click="removeAttr(index)">×</i>
+            </li>
+            <!-- <li class="with-x">iphone<i>×</i></li>
             <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x">OPPO<i>×</i></li> -->
           </ul>
         </div>
-        <SearchSelector />
+        <SearchSelector @tradeMarkInfo="tradeMarkInfo" @attrInfo="attrInfo" />
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <!-- 排序的结构 -->
+                  <a href="#"
+                    >综合
+                    <span
+                      v-show="isOne"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a href="#"
+                    >销量
+                    <span
+                      v-show="isTwo"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span>
+                  </a>
                 </li>
-                <li>
-                  <a href="#">新品</a>
+                <li :class="{ active: isThree }" @click="changeOrder('3')">
+                  <a href="#"
+                    >新品<span
+                      v-show="isThree"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">评价</a>
+                <li :class="{ active: isFour }" @click="changeOrder('4')">
+                  <a href="#"
+                    >评价<span
+                      v-show="isFour"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">价格⬆</a>
+                <li :class="{ active: isFive }" @click="changeOrder('5')">
+                  <a href="#"
+                    >价格<span
+                      v-show="isFive"
+                      class="iconfont"
+                      :class="{ 'icon-up': isAsc, 'icon-down': isDesc }"
+                    ></span
+                  ></a>
                 </li>
-                <li>
+                <!-- <li>
                   <a href="#">价格⬇</a>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5">
+              <li
+                class="yui3-u-1-5"
+                v-for="(goods, index) in goodsList"
+                :key="goods.id"
+              >
                 <div class="list-wrap">
                   <div class="p-img">
                     <a href="item.html" target="_blank"
-                      ><img src="./images/mobile01.png"
+                      ><img :src="goods.defaultImg"
                     /></a>
                   </div>
                   <div class="price">
                     <strong>
                       <em>¥</em>
-                      <i>6088.00</i>
+                      <i>{{ goods.price }}.00</i>
                     </strong>
                   </div>
                   <div class="attr">
@@ -65,9 +120,7 @@
                       target="_blank"
                       href="item.html"
                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】"
-                      >Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s
-                      (A1699)Apple苹果iPhone 6s (A1699)Apple苹果iPhone 6s
-                      (A1699)</a
+                      >{{ goods.title }}</a
                     >
                   </div>
                   <div class="commit">
@@ -86,7 +139,7 @@
                   </div>
                 </div>
               </li>
-              <li class="yui3-u-1-5">
+              <!-- <li class="yui3-u-1-5">
                 <div class="list-wrap">
                   <div class="p-img">
                     <img src="./images/mobile02.png" />
@@ -418,38 +471,11 @@
                     >
                   </div>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <!-- 分页器 -->
+          <Pagination />
         </div>
       </div>
     </div>
@@ -458,10 +484,137 @@
 
 <script>
 import SearchSelector from "@/views/Search/SearchSelector/SearchSelector.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Search",
+  data() {
+    return {
+      // 带给服务器的参数
+      searchParams: {
+        category1Id: "",
+        category2Id: "",
+        category3Id: "",
+        categoryName: "",
+        keyword: "",
+        order: "1:desc",
+        pageNo: 1,
+        pageSize: 10,
+        props: [],
+        trademark: "",
+      },
+    };
+  },
   components: {
     SearchSelector,
+  },
+  beforeMount() {
+    Object.assign(this.searchParams, this.$route.params, this.$route.query);
+    // console.log("发请求之前", this.searchParams);
+  },
+  mounted() {
+    this.getdata();
+  },
+  // computed: {
+  //   ...mapState({
+  //     goodsList: (state) => state.search.searchList.goodsList
+  //   }),
+  // },
+  computed: {
+    ...mapGetters(["goodsList"]),
+    isOne() {
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") != -1;
+    },
+    isThree() {
+      return this.searchParams.order.indexOf("3") != -1;
+    },
+    isFour() {
+      return this.searchParams.order.indexOf("4") != -1;
+    },
+    isFive() {
+      return this.searchParams.order.indexOf("5") != -1;
+    },
+    // 箭头
+    isAsc() {
+      return this.searchParams.order.indexOf("asc") != -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") != -1;
+    },
+  },
+  methods: {
+    // 向服务器发请求获取search模块数据
+    getdata() {
+      this.$store.dispatch("getSearchList", {});
+    },
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      // 地址栏也要改
+      if (this.$route.params) {
+        this.$router.push({ name: "search", params: this.$route.params });
+      }
+      this.getdata();
+    },
+    removeKeyWords() {
+      this.searchParams.keyWords = undefined;
+      if (this.$route.query) {
+        this.$router.push({ name: "search", params: this.$route.query });
+      }
+      this.getdata();
+      this.$bus.$emit("clear");
+    },
+    tradeMarkInfo(trademark) {
+      // console.log("11", trademark);
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getdata();
+    },
+    removetradeMark() {
+      this.searchParams.trademark = undefined;
+      this.getdata();
+    },
+    attrInfo(attr, attrValue) {
+      let props = `${attr.attrId} : ${attrValue}:${attr.attrName}`;
+      if (this.searchParams.props.indexOf(props) == -1) {
+        this.searchParams.props.push(props);
+      }
+      this.getdata();
+      // console.log(attr, attrValue);
+    },
+    removeAttr(index) {
+      this.searchParams.props.splice(index, 1);
+      this.getdata();
+    },
+    // 排序
+    changeOrder(flag) {
+      // console.log(flag);
+      let originOrder = this.searchParams.order;
+      let originFlag = this.searchParams.order.split(":")[0];
+      let originSort = this.searchParams.order.split(":")[1];
+      let newOrder = "";
+      if (flag == originFlag) {
+        newOrder = `${originFlag}:${originSort == "desc" ? "asc" : "desc"}`;
+      } else {
+        newOrder = `${flag}:${"desc"}`;
+      }
+      this.searchParams.order = newOrder;
+      this.getdata();
+      // console.log(originOrder);
+    },
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      // console.log(this.searchParams);
+      Object.assign(this.searchParams, this.$route.params, this.$route.query);
+      this.getdata();
+      this.category1Id = undefined;
+      this.category2Id = undefined;
+      this.category3Id = undefined;
+    },
   },
 };
 </script>
@@ -708,93 +861,93 @@ export default {
           }
         }
       }
+      // 分页器
+      // .page {
+      //   width: 733px;
+      //   height: 66px;
+      //   overflow: hidden;
+      //   float: right;
 
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        float: right;
+      //   .sui-pagination {
+      //     margin: 18px 0;
 
-        .sui-pagination {
-          margin: 18px 0;
+      //     ul {
+      //       margin-left: 0;
+      //       margin-bottom: 0;
+      //       vertical-align: middle;
+      //       width: 490px;
+      //       float: left;
 
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
+      //       li {
+      //         line-height: 18px;
+      //         display: inline-block;
 
-            li {
-              line-height: 18px;
-              display: inline-block;
+      //         a {
+      //           position: relative;
+      //           float: left;
+      //           line-height: 18px;
+      //           text-decoration: none;
+      //           background-color: #fff;
+      //           border: 1px solid #e0e9ee;
+      //           margin-left: -1px;
+      //           font-size: 14px;
+      //           padding: 9px 18px;
+      //           color: #333;
+      //         }
 
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
+      //         &.active {
+      //           a {
+      //             background-color: #fff;
+      //             color: #e1251b;
+      //             border-color: #fff;
+      //             cursor: default;
+      //           }
+      //         }
 
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
+      //         &.prev {
+      //           a {
+      //             background-color: #fafafa;
+      //           }
+      //         }
 
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
+      //         &.disabled {
+      //           a {
+      //             color: #999;
+      //             cursor: default;
+      //           }
+      //         }
 
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
+      //         &.dotted {
+      //           span {
+      //             margin-left: -1px;
+      //             position: relative;
+      //             float: left;
+      //             line-height: 18px;
+      //             text-decoration: none;
+      //             background-color: #fff;
+      //             font-size: 14px;
+      //             border: 0;
+      //             padding: 9px 18px;
+      //             color: #333;
+      //           }
+      //         }
 
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
+      //         &.next {
+      //           a {
+      //             background-color: #fafafa;
+      //           }
+      //         }
+      //       }
+      //     }
 
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
-
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
-          }
-        }
-      }
+      //     div {
+      //       color: #333;
+      //       font-size: 14px;
+      //       float: right;
+      //       width: 241px;
+      //     }
+      //   }
+      // }
     }
   }
 }

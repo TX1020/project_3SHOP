@@ -7,7 +7,7 @@ const state = {
 const actions = {
   // 通过api里面的接口函数调用发请求获取服务器的数据
   async categoryList({ commit }) {
-    const result = await reqCategoryList()
+    let result = await reqCategoryList()
     console.log(result)
     if (result.code === 200) {
       commit('CATEGORYLIST', result.data)
@@ -22,7 +22,7 @@ const actions = {
     }
   },
   async getFloorList({ commit }) {
-    const result = await reqFloorList()
+    let result = await reqFloorList()
     // console.log(result)
     if (result.code === 200) {
       commit('GETFLOORLIST', result.data)
